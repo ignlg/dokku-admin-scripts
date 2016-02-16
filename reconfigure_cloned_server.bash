@@ -42,11 +42,14 @@ if [[ "x$oldname" != "x" ]]; then
     ###
     #  DOKKU
     ###
+    echo "Dokku..."
 		cd /home/dokku
 
+    echo "HOSTNAME & VHOST = ${newname}"
     cat HOSTNAME | sed "s/$oldname/$newname/g" > HOSTNAME
     cat VHOST | sed "s/$oldname/$newname/g" > VHOST
 
+    echo "Projects..."
 		for proj in  */; do
 			for file in nginx.conf URL URLS VHOST; do
 				cp -n "${proj}${file}" "${proj}${file}_MIGRATION_BACKUP" &&
@@ -54,5 +57,6 @@ if [[ "x$oldname" != "x" ]]; then
 			done
 		done
 		cd "$cwd"
+    echo "Done!"
 	fi
 fi
