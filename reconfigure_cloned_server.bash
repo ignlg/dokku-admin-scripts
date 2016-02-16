@@ -53,7 +53,7 @@ if [[ "x${oldname}" != "x" ]]; then
 		for proj in  */; do
 			for file in nginx.conf URL URLS VHOST; do
 				cp -n "${proj}${file}" "${proj}${file}_MIGRATION_BACKUP" &&
-				cat "${proj}${file}" | sed "s/${oldname}/${newname}/g" > "${proj}${file}"
+				cat "${proj}${file}" | sed "s/${oldname}/${newname}/g" | cat > "${proj}${file}"
 			done
 		done
 		cd "${cwd}"
