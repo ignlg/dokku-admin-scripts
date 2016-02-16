@@ -10,13 +10,13 @@ ip='127.0.0.1'
 
 echo -n "Enter the previous name: "
 read oldname
-if [[ "x$oldname" != "x" ]]; then
+if [[ "x${oldname}" != "x" ]]; then
 	echo -n "Enter the new name: "
 	read newname
 
-	if [[ "x$newname" != "x" ]]; then
+	if [[ "x${newname}" != "x" ]]; then
 
-		echo -n "Migrating $oldname -> $newname? (y/N): "
+		echo -n "Migrating ${oldname} -> ${newname}? (y/N): "
 		read sure
 
 		case $sure in
@@ -32,12 +32,12 @@ if [[ "x$oldname" != "x" ]]; then
 		rm /etc/ssh/ssh_host_*
 		/usr/sbin/dpkg-reconfigure openssh-server
 
-    hostname $newname
-		echo $ip $newname >> /etc/hosts
+    hostname ${newname}
+		echo ${ip} ${newname} >> /etc/hosts
 
 		echo "Rememeber to exec at client machines:"
-		echo "  ssh-keygen -R $newname"
-		echo "  ssh-keygen -R $ip"
+		echo "  ssh-keygen -R ${newname}"
+		echo "  ssh-keygen -R ${ip}"
 
     ###
     #  DOKKU
@@ -46,17 +46,17 @@ if [[ "x$oldname" != "x" ]]; then
 		cd /home/dokku
 
     echo "HOSTNAME & VHOST = ${newname}"
-    cat HOSTNAME | sed "s/$oldname/$newname/g" > HOSTNAME
-    cat VHOST | sed "s/$oldname/$newname/g" > VHOST
+    cat HOSTNAME | sed "s/${oldname}/${newname}/g" | cat > HOSTNAME
+    cat VHOST | sed "s/${oldname}/${newname}/g" | cat > VHOST
 
     echo "Projects..."
 		for proj in  */; do
 			for file in nginx.conf URL URLS VHOST; do
 				cp -n "${proj}${file}" "${proj}${file}_MIGRATION_BACKUP" &&
-				cat "${proj}${file}" | sed "s/$oldname/$newname/g" > "${proj}${file}"
+				cat "${proj}${file}" | sed "s/${oldname}/${newname}/g" > "${proj}${file}"
 			done
 		done
-		cd "$cwd"
+		cd "${cwd}"
     echo "Done!"
 	fi
 fi
